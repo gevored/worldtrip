@@ -1,23 +1,14 @@
-
-import Banner from '../../public/images/Banner.svg'
-
 import { Box, Img } from '@chakra-ui/react'
 
-export function Header(){
-    return(
-        <Box 
+export function Header() {
+    return (
+        <Box
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+            margin='1rem 1rem'
         >
-            <Box 
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-            >
-                <Img src='/WorldTrip.svg' alt='worldtrip'/>
-            </Box>
-            <Img 
-                maxW='1440px'
-                src='/Banner.svg' alt='Dan Abramov' 
-            />
+            <Img src='/WorldTrip.svg' alt='worldtrip' />
         </Box>
     )
 }
