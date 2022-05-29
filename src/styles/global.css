@@ -1,0 +1,10 @@
+.swiper-button-next {
+    background-color: 'orange' !important;
+}
+
+.swiper-pagination-bullet {
+    background-color: blue;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+}
