@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Banner } from '../components/banner'
 import { Menu } from '../components/menu'
-import { Carrossel } from '../components/Carrosel'
+import { Carrossel } from '../components/carrosel'
 import {Text, VStack} from  '@chakra-ui/react'
 
 const Home: NextPage = () => {

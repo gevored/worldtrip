@@ -83,20 +83,26 @@ export const getStaticProps :GetStaticProps  =  async function ({params}){
 
     const {slug} = params!
 
-
     try {
-        const response  = await api.get('/countryImages', {
+        const responseIMG  = await api.get('/countryImages', {
             params:{
                 country: slug,
             },
             responseType:'arraybuffer'
         })
 
-        const b64 = Buffer.from(response.data , 'binary').toString('base64')
+        const b64 = Buffer.from(responseIMG.data , 'binary').toString('base64')
         const  mimeType = 'image/png'
 
-
         const imgElement = `data:${mimeType};base64,${b64}` ;
+        
+        const responseInfo = await api.get('/infoContinent',{
+            params:{
+                continent:slug
+            }
+        })
+
+        console.log(responseInfo.data)
         
         return {
             props:{

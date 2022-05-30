@@ -5,6 +5,11 @@ import { Box, Img } from '@chakra-ui/react'
 export function Banner(){
     return(
         <Box 
+        w='100%'
+        display='flex'
+        
+        justifyContent='center'
+        alignItems='center'
         >
             
             <Img 
