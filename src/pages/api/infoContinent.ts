@@ -1,10 +1,14 @@
 import {NextApiRequest, NextApiResponse} from 'next'
+import path from 'path'
+import fs from 'fs'
 
+interface Continents{
 
+}
 
 var continents = {
-    'europa':{
-        gb:{
+    'europa':[
+        {
             name:'Reino Unido',
             SrcFlagCountry: '/GB',
             citys:[
@@ -14,7 +18,7 @@ var continents = {
                 }
             ]
         },
-        fr:{
+        {
             name:'França',
             SrcFlagCountry: '/fr',
             citys:[
@@ -24,7 +28,7 @@ var continents = {
                 }
             ]
         },
-        it:{
+        {
             name:'Itália',
             SrcFlagCountry: '/it',
             citys:[
@@ -34,7 +38,7 @@ var continents = {
                 }
             ]
         },
-        nl:{
+        {
             name:'Holanda',
             SrcFlagCountry: '/GB',
             citys:[
@@ -44,7 +48,7 @@ var continents = {
                 }
             ]
         },
-        cz:{
+        {
             name:'República Tcheca',
             SrcFlagCountry: '/cz',
             citys:[
@@ -54,18 +58,29 @@ var continents = {
                 }
             ]
         },
-    },
+    ],
 }
 
 export default function  handle(req: NextApiRequest,res : NextApiResponse){
     
     if(req.method == 'GET'){
         
-        let {continent} = req.query 
+        const {continent} = req.query 
+        
+        const objContinent = continents[continent as keyof typeof continents] 
 
-        console.log(continent)
-        res.status(200)
+        const infoContinent = objContinent.map(country =>(
+            {
+                nameCountry : country.name,
+                nameCity:country.citys[0].nameCity,
+                SrcIMGCity: fs.readFileSync(path.resolve('.', `image_folder/${country.citys[0].SrcIMGCity}.jpg`)),
+                SrcFlagCountry:fs.readFileSync(path.resolve('.', `image_folder/${country.SrcFlagCountry}.png`))
+            }
+        ))
 
+        const continentIMG =  fs.readFileSync(path.resolve('.', `image_folder/${continent}.jpg`))
+        
+        res.status(200).setHeader('content-type', 'application/json').send({infoContinent})
     }
 }
 

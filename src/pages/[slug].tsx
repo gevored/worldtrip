@@ -3,9 +3,14 @@ import {GetStaticProps} from 'next'
 import {api} from  '../services/axios'
 import {Img , Box, Text, Center, HStack, VStack} from '@chakra-ui/react'
 
+
 interface PostProps{
     post :{
-        image?:string;
+        imgCountry?:string;
+        nameCity:string;
+        nameCountry:string;
+        SrcIMGCity:string;
+        SrcFlagCountry:string;
     };
 }
 export default function Post({post}:PostProps){
@@ -17,7 +22,7 @@ export default function Post({post}:PostProps){
     <Img 
     h='500px'
     w='1440px'
-      src = {post?.image}
+      src = {post?.imgCountry}
     />
     
     <Box
@@ -79,35 +84,47 @@ export async function getStaticPaths() {
       }
   }
 
+function BufferIMG(img : string){
+    let b64 = Buffer.from( img, 'binary').toString('base64')
+    return `data:image/png;base64,${b64}` 
+}
+
 export const getStaticProps :GetStaticProps  =  async function ({params}){
 
     const {slug} = params!
 
     try {
-        const responseIMG  = await api.get('/countryImages', {
-            params:{
-                country: slug,
-            },
-            responseType:'arraybuffer'
-        })
-
-        const b64 = Buffer.from(responseIMG.data , 'binary').toString('base64')
-        const  mimeType = 'image/png'
-
-        const imgElement = `data:${mimeType};base64,${b64}` ;
         
-        const responseInfo = await api.get('/infoContinent',{
-            params:{
-                continent:slug
+        const promiseALL = await Promise.all([
+            api.get('/infoContinent',{
+                params:{
+                    continent:slug
+                },
+                responseType:'arraybuffer'
+            }),
+
+            api.get('/countryImages',{
+                params:{
+                    continent:slug
+                },
+                responseType:'arraybuffer'
+            })
+        ])
+
+        const imgCountry =  BufferIMG(promiseALL[1].data);
+
+        const objContinent = promiseALL[0].data.map(info  =>(
+            {
+                nameCity: info.nameCountry,
+                nameCountry:info.nameCountry,
             }
-        })
+        ))
 
-        console.log(responseInfo.data)
-        
+        console.log(objContinent)
         return {
             props:{
                 post: {
-                    image: imgElement,
+                    imgCountry: imgCountry,
                 }
             }
         }

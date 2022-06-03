@@ -8,8 +8,8 @@ export default function handler(req: NextApiRequest,res : NextApiResponse){
     if(req.method === 'GET'){
         try {
          
-        const {country} = req.query
-        const filePath = path.resolve('.', `image_folder/${country}.jpg`)
+        const {continent} = req.query
+        const filePath = path.resolve('.', `image_folder/${continent}.jpg`)
         const imageBuffer = fs.readFileSync(filePath)
 
         res.status(200).setHeader('Content-Type', 'image/jpg').send(imageBuffer)
