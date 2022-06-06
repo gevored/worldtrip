@@ -69,7 +69,7 @@ export default function  handle(req: NextApiRequest,res : NextApiResponse){
         
         const objContinent = continents[continent as keyof typeof continents] 
 
-        const infoContinent = objContinent.map(country =>(
+        const infoContinent = objContinent?.map(country =>(
             {
                 nameCountry : country.name,
                 nameCity:country.citys[0].nameCity,
@@ -78,9 +78,8 @@ export default function  handle(req: NextApiRequest,res : NextApiResponse){
             }
         ))
 
-        const continentIMG =  fs.readFileSync(path.resolve('.', `image_folder/${continent}.jpg`))
-        
-        res.status(200).setHeader('content-type', 'application/json').send({infoContinent})
+    
+        res.status(200).setHeader('content-type', 'application/json',).send({infoContinent})
     }
 }
 
